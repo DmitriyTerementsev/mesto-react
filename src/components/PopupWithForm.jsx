@@ -1,19 +1,13 @@
 import React from "react";
 
-function PopupWithForm() {
-  const
+function PopupWithForm({title, name, isOpen, onClose, buttonText, children}) {
   return (
-    <div className={`popup popup_${props.name}`}>
+    <div className={isOpen ? `popup popup_${name} popup_active` : `popup popup_${name}`} onClick={onClose}>
       <button type="button" className="popup__close popup__close_form" aria-label="закрыть попап"></button>
-      <form className={`popup__container popup__container_${props.name}`} name="profile_edit_form" novalidate>
-        <h3 className="popup__title">Редактировать профиль</h3>
-        <input className="input-text input-text_type_name" name="name" type="text" id="input_name" placeholder="Введите имя"
-          value="/" minlength="2" maxlength="40" required />
-        <span className="input input_name-error"></span>
-        <input className="input-text input-text_type_about" name="about" type="text" id="input_about" placeholder="О себе"
-          value="/" minlength="2" maxlength="200" required />
-        <span className="input input_about-error"></span>
-        <button type="submit" className="popup__save-btn">Сохранить</button>
+      <form className={`popup__container popup__container_${name}`} name={name} onClick={(e) => e.stopPropagation()}>
+        <h3 className="popup__title">{title}</h3>
+        {children}
+        <button type="submit" className="popup__save-btn">{buttonText}</button>
       </form>
     </div>
   );
