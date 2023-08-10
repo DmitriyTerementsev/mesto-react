@@ -1,80 +1,32 @@
-export default class Api {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+class Api {
+  constructor(url, token) {
+    this._url = url;
+    this._token = token;
   }
 
-  //Получаю карточку с сервера
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
-    }).then(this._checkError);
+  //----------Получение данных
+  request({ data, method = "GET", section }) {
+    //----------Запрос по адресу и получение данных
+    return fetch(`${this._url}/v1/cohort-71${section}`, {
+      method: method,
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+      body: data ? JSON.stringify(data) : null,
+    }).then((res) =>
+      res.ok
+        ? res.json()
+        : Promise.reject(`Ошибка: ${res.status}, ${res.statusText}`)
+    );
   }
-
-  //Получаю данные пользователя
-  getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
-    }).then(this._checkError);
-  }
-
-  //Устанавливаю данные пользователя
-  setUserInfo(name, about) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({ name, about }),
-    }).then(this._checkError);
-  }
-
-  //Смена аватара
-  changeAvatar(avatar) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({ avatar }),
-    }).then(this._checkError);
-  }
-
-  //Добавление карточки
-  addCard(name, link) {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: "POST",
-      headers: this._headers,
-      body: JSON.stringify({ name, link }),
-    }).then(this._checkError);
-  }
-
-  //Удаление карточки
-  deleteCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then(this._checkError);
-  }
-
-  //Поставить лайк
-  likeOnCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-      method: "PUT",
-      headers: this._headers,
-    }).then(this._checkError);
-  }
-
-  //Убрать лайк
-  removeLikeOnCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then(this._checkError);
-  }
-
-  //проверка ошибок
-  _checkError(res) {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}, ${res.statusText}`);
-    }
+  //----------Вывод ошибки
+  catch(err) {
+    console.log(err);
   }
 }
+//----------Адрес и личный токен
+export const api = new Api(
+  "https://nomoreparties.co",
+  "27985bc4-246f-41ac-8e73-e4e5229db7b8"
+);

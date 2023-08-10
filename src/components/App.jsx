@@ -4,40 +4,72 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
 
 function App() {
+  //----------Все попапы изначально закрыты
   const [popup, setPopup] = useState({
     profile: false,
     avatar: false,
     addCard: false,
     delCard: false,
+    image: false,
   });
-
+  //----------Изначальный стейт для карточки
+  const [image, setImage] = useState(null);
+  //----------Обработчики открытия попапов:
+  //----------Редактировать профиль
   function handleEditProfileClick() {
     console.log("тык");
     setPopup({ ...popup, profile: true });
   }
+  //----------Редактировать аватар
   function handleEditAvatarClick() {
     console.log("тык");
     setPopup({ ...popup, avatar: true });
   }
+  //----------Добавить место
   function handleAddPlaceClick() {
     console.log("тык");
     setPopup({ ...popup, addCard: true });
   }
+  //----------Удалить карточку
   function handleADelCardClick() {
     console.log("тык");
     setPopup({ ...popup, delCard: true });
   }
-
+  //----------Открыть карточку
+  function handleCardClick(name, link) {
+    setPopup({ ...popup, image: true });
+    setImage({ ...image, name: name, link: link });
+  }
+  //----------Закрыть попапы
   function closeAllPopups() {
     setPopup({
       profile: false,
       avatar: false,
       addCard: false,
       delCard: false,
+      image: false,
     });
   }
+  //----------Закрыть попапы на клавишу ESC
+  const isOpen =
+    popup.profile ||
+    popup.card ||
+    popup.avatar ||
+    popup.addCard ||
+    popup.delCard ||
+    popup.image;
+  useEffect(() => {
+    function keyHandler(evt) {
+      evt.key === "Escape" ? closeAllPopups() : null;
+    }
+    isOpen ? document.addEventListener("keydown", keyHandler) : null;
+    return () => {
+      document.removeEventListener("keydown", keyHandler);
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -48,6 +80,8 @@ function App() {
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
+            onImgClick={handleCardClick}
+            onTrashClick={handleADelCardClick}
           />
           <Footer />
           <PopupWithForm
@@ -88,25 +122,25 @@ function App() {
             buttonText={"Создать"}
           >
             <input
-            className="input-text input-text_type_place"
-            name="place"
-            type="text"
-            id="input_place"
-            placeholder="Название"
-            minLength="2"
-            maxLength="30"
-            required
-          />
-          <span className="input input_place-error"></span>
-          <input
-            className="input-text input-text_type_link"
-            name="link"
-            type="url"
-            id="input_link"
-            placeholder="Добавьте ссылку"
-            required
-          />
-          <span className="input input_link-error"></span>
+              className="input-text input-text_type_place"
+              name="place"
+              type="text"
+              id="input_place"
+              placeholder="Название"
+              minLength="2"
+              maxLength="30"
+              required
+            />
+            <span className="input input_place-error"></span>
+            <input
+              className="input-text input-text_type_link"
+              name="link"
+              type="url"
+              id="input_link"
+              placeholder="Добавьте ссылку"
+              required
+            />
+            <span className="input input_link-error"></span>
           </PopupWithForm>
           <PopupWithForm
             title={"Обновить аватар"}
@@ -116,14 +150,14 @@ function App() {
             buttonText={"Сохранить"}
           >
             <input
-            className="input-text input-text_type_avatar"
-            name="avatar"
-            type="url"
-            id="input_avatar"
-            placeholder="Добавьте ссылку"
-            required
-          />
-          <span className="input input_avatar-error"></span>
+              className="input-text input-text_type_avatar"
+              name="avatar"
+              type="url"
+              id="input_avatar"
+              placeholder="Добавьте ссылку"
+              required
+            />
+            <span className="input input_avatar-error"></span>
           </PopupWithForm>
           <PopupWithForm
             title={"Вы уверены?"}
@@ -131,12 +165,16 @@ function App() {
             isOpen={popup.delCard}
             onClose={closeAllPopups}
             buttonText={"Да"}
-          >
-          </PopupWithForm>
+          ></PopupWithForm>
+          <ImagePopup
+            isOpen={popup.image}
+            onClose={closeAllPopups}
+            {...image}
+          />
         </div>
       </div>
     </>
   );
-};
+}
 
 export default App;
