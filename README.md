@@ -13,10 +13,8 @@
 ### Сделано на основе https://alchimik981.github.io/mesto/ и портировано на React
 
 **В этом проекте я:**
-* Портировал разметку, стили на React
-* Вынес компоненты (header, main, footer, popups, api)
-* Сделал запрос Api, получил данные с сервера и подставил их для отрисовки карточек
+
 
 **GitHub Pages**
- * 
+* https://alchimik981.github.io/mesto-react/ 
 
