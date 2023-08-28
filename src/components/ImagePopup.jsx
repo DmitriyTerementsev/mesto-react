@@ -1,6 +1,6 @@
 import React from "react";
 
-function ImagePopup({ name, link, isOpen, onClose }) {
+function ImagePopup({ card, isOpen, onClose }) {
   return (
     <div
       className={
@@ -15,8 +15,8 @@ function ImagePopup({ name, link, isOpen, onClose }) {
           aria-label="закрыть попап"
           onClick={onClose}
         ></button>
-        <img className="popup__photo" src={link} alt={name} />
-        <p className="popup__description">{name}</p>
+        <img className="popup__photo" src={card?.link} alt={card?.name} />
+        <p className="popup__description">{card?.name}</p>
       </div>
     </div>
   );

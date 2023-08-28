@@ -1,15 +1,17 @@
 import React from "react";
 import editOverlay from "../images/edit-profile.svg";
 import Card from "./Card";
+import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({
   onEditProfile,
-  onAddPlace,
+  addCard,
   onEditAvatar,
   onImgClick,
   onTrashClick,
-  cards
+  onLikeClick,
+  cards,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -50,19 +52,18 @@ function Main({
             type="button"
             className="profile__add-btn"
             aria-label="Кнопка добавления фото"
-            onClick={onAddPlace}
+            onClick={addCard}
           ></button>
         </section>
 
         <section className="elements">
-          {cards?.map((data) => (
+          {cards?.map((card) => (
             <Card
-              key={data._id}
-              {...data}
+              key={card._id}
+              card={card}
               onImgClick={onImgClick}
-              onTrashClick={onTrashClick}
               onLikeClick={onLikeClick}
-              
+              onTrashClick={onTrashClick}
             />
           ))}
         </section>

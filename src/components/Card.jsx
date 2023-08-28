@@ -1,31 +1,31 @@
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useContext } from "react";
 
-function Card({ card, onImgClick, onTrashClick, onLikeClick }) {
+function Card({ card, onImgClick, onLikeClick, onTrashClick }) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser?._id;
   const isLiked = card.likes.some((i) => i._id === currentUser?._id);
 
-
   function handleClick() {
     onImgClick(card.name, card.link);
   }
-  function handleDelClick() {
-    onTrashClick(card._id);
-  }
   function handleLikeClick() {
     onLikeClick(card, isLiked);
+  }
+  function handleDelClick() {
+    onTrashClick(card._id);
   }
 
   return (
     <article className="element">
       {isOwn && (
-      <button
-        type="button"
-        className="element__delete-btn"
-        aria-label="Удаление фото"
-        onClick={handleDelClick}
-      ></button>
+        <button
+          type="button"
+          className="element__delete-btn"
+          aria-label="Удаление фото"
+          onClick={handleDelClick}
+        ></button>
       )}
       <img
         className="element__pic"
@@ -38,7 +38,9 @@ function Card({ card, onImgClick, onTrashClick, onLikeClick }) {
         <div className="element__like-group">
           <button
             type="button"
-            className={`element__like-btn ${isLiked && 'element__like-btn_active'}`}
+            className={`element__like-btn ${
+              isLiked && "element__like-btn_active"
+            }`}
             onClick={handleLikeClick}
             aria-label="Кнопка лайка"
           ></button>
