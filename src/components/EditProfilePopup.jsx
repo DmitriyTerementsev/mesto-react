@@ -47,7 +47,7 @@ export default function EditProfilePopup({
           required: "Заполните это поле.",
           minLength: {
             value: 2,
-            message: "Текст должен быть не короче 2 симв.",
+            message: "Минимальная длина 2 символа.",
           },
         })}
       />
@@ -62,7 +62,7 @@ export default function EditProfilePopup({
           required: "Заполните это поле.",
           minLength: {
             value: 2,
-            message: "Текст должен быть не короче 2 симв.",
+            message: "Минимальная длина 2 символа.",
           },
         })}
       />

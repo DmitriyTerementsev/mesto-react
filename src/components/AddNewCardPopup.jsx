@@ -16,8 +16,10 @@ export default function AddNewCardPopup({
   } = useForm({ mode: "onChange" });
 
   useEffect(() => {
-    reset();
-  }, [isOpen]);
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen, reset]);
 
   function onSubmit(data) {
     addCard({ name: data.name, link: data.link });
@@ -41,7 +43,7 @@ export default function AddNewCardPopup({
           required: "Заполните это поле.",
           minLength: {
             value: 2,
-            message: "Текст должен быть не короче 2 симв.",
+            message: "Минимальная длина 2 символа.",
           },
         })}
       />
